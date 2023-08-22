@@ -1,12 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# Importamos a classe Migrate
 from flask_migrate import Migrate
+from spectree import SpecTree
+
 from config import Config
 
 db = SQLAlchemy()
-# Criamos uma instância da classe Migrate
 migrate = Migrate()
+api = SpecTree("flask", title="Mini Feed API", version="v.1.0", path="docs")
 
 def create_app():
     app = Flask(__name__)
@@ -15,14 +16,13 @@ def create_app():
     
     db.init_app(app)
 
-    # Importamos os modelos criados
     from models import User
-
-    # Inicializamos o Flask-Migrate com nossa aplicação
     migrate.init_app(app, db)
 
-    @app.route("/")
-    def hello_world():
-        return "<h1>Hello, World!</h1>"
+    from controllers import user_controller
+
+    app.register_blueprint(user_controller)
+
+    api.register(app)
 
     return app

@@ -9,7 +9,9 @@ user_controller = Blueprint("user_controller", __name__, url_prefix="/users")
 
 @user_controller.get("/")
 def get_users():
-    
+    """
+    Get all users
+    """
     users = User.query.all()
 
     return jsonify(
@@ -28,7 +30,9 @@ def get_users():
 
 @user_controller.get("/<int:user_id>")
 def get_user(user_id):
-
+    """
+    Get a specified user
+    """
     user = User.query.get(user_id)
 
     if user is None:
@@ -45,7 +49,9 @@ def get_user(user_id):
 
 @user_controller.post("/")
 def post_user():
-    
+    """
+    Create an user
+    """
     data = request.json
 
     if User.query.filter_by(username=data["username"]).first():
@@ -65,7 +71,9 @@ def post_user():
 
 @user_controller.put("/<int:user_id>")
 def put_user(user_id):
-    
+    """
+    Update an user
+    """
     user = User.query.get(user_id)
 
     if user is None:
@@ -86,7 +94,9 @@ def put_user(user_id):
 @user_controller.delete("/<int:user_id>")
 def delete_user(user_id):
     user = User.query.get(user_id)
-
+    """
+    Delete an user
+    """
     if user is None:
         return {"msg": f"There is no user with id {user_id}"}, 404
 
