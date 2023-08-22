@@ -1,6 +1,9 @@
 from datetime import datetime
+from typing import List
+
 from factory import db
-from pydantic import BaseModel 
+from pydantic import BaseModel
+from utils.models import OrmBase
 
 class User(db.Model):
     __tablename__ = "user"
@@ -18,3 +21,16 @@ class UserCreate(BaseModel):
     username: str
     email: str
     birthdate: datetime = None
+
+class UserResponse(OrmBase):
+    id: int
+    username: str
+    email: str
+    birthdate: datetime = None
+    created_at: datetime
+        
+    class Config:
+        orm_mode = True
+
+class UserResponseList(BaseModel):
+    __root__: List[UserResponse]

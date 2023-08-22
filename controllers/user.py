@@ -1,38 +1,33 @@
+import json
 from datetime import datetime
 
 from factory import api, db
 from factory import db
 from flask import Blueprint, jsonify
 from flask.globals import request
-from models.user import User, UserCreate
+from models.user import User, UserCreate, UserResponse, UserResponseList
 from spectree import Response
+from utils.responses import DefaultResponse
 
 user_controller = Blueprint("user_controller", __name__, url_prefix="/users")
 
 @user_controller.get("/")
-@api.validate(resp=Response(HTTP_200=None), tags=["users"])
+@api.validate(resp=Response(HTTP_200=UserResponseList), tags=["users"])
 def get_users():
     """
     Get all users
     """
     users = User.query.all()
 
-    return jsonify(
-        [
-            {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-                "birthdate": user.birthdate.isoformat() if user.birthdate else None,
-                "created_at" : user.created_at.isoformat(),
-            }
-            for user in users
-        ]
-    ), 200
+    response = UserResponseList(
+        __root__ = [UserResponse.from_orm(user).dict() for user in users]
+    ).model_dump_json()
+
+    return jsonify(json.loads(response))
 
 
 @user_controller.get("/<int:user_id>")
-@api.validate(resp=Response(HTTP_200=None, HTTP_404=None), tags=["users"])
+@api.validate(resp=Response(HTTP_200=UserResponse, HTTP_404=DefaultResponse), tags=["users"])
 def get_user(user_id):
     """
     Get a specified user
@@ -42,13 +37,9 @@ def get_user(user_id):
     if user is None:
         return {"msg": f"There is no user with id {user_id}"}, 404
 
-    return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "birthdate": user.birthdate.isoformat() if user.birthdate else None,
-        "created_at" : user.created_at.isoformat(),
-    }, 200
+    response = UserResponse.from_orm(user).json()
+
+    return json.loads(response), 200
 
 
 @user_controller.post("/")
