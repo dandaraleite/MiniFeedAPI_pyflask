@@ -29,9 +29,7 @@ def get_users():
 @user_controller.get("/<int:user_id>")
 @api.validate(resp=Response(HTTP_200=UserResponse, HTTP_404=DefaultResponse), tags=["users"])
 def get_user(user_id):
-    """
-    Get a specified user
-    """
+    """Get a specified user"""
     user = User.query.get(user_id)
 
     if user is None:
@@ -45,9 +43,7 @@ def get_user(user_id):
 @user_controller.post("/")
 @api.validate(json=UserCreate, resp=Response(HTTP_201=DefaultResponse), tags=["users"])
 def post_user():
-    """
-    Create an user
-    """
+    """Create an user"""
     data = request.json
 
     if User.query.filter_by(username=data["username"]).first():
@@ -75,9 +71,7 @@ def post_user():
 @user_controller.put("/<int:user_id>")
 @api.validate(json=UserEdit, resp=Response(HTTP_200=DefaultResponse, HTTP_404=DefaultResponse), tags=["users"])
 def put_user(user_id):
-    """
-    Update an user
-    """
+    """Update an user"""
     user = User.query.get(user_id)
 
     if user is None:
@@ -101,9 +95,7 @@ def put_user(user_id):
 @user_controller.delete("/<int:user_id>")
 @api.validate(resp=Response(HTTP_200=DefaultResponse, HTTP_404=DefaultResponse), tags=["users"])
 def delete_user(user_id):
-    """
-    Delete an user
-    """
+    """Delete an user"""
     user = User.query.get(user_id)
 
     if user is None:
