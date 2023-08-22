@@ -1,5 +1,6 @@
 from datetime import datetime
 from factory import db
+from pydantic import BaseModel 
 
 class User(db.Model):
     __tablename__ = "user"
@@ -12,3 +13,8 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return f"<User {self.username}>"
+    
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    birthdate: datetime = None
