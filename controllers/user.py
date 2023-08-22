@@ -5,7 +5,7 @@ from factory import api, db
 from factory import db
 from flask import Blueprint, jsonify
 from flask.globals import request
-from models.user import User, UserCreate, UserResponse, UserResponseList
+from models.user import User, UserCreate, UserEdit, UserResponse, UserResponseList
 from spectree import Response
 from utils.responses import DefaultResponse
 
@@ -43,7 +43,7 @@ def get_user(user_id):
 
 
 @user_controller.post("/")
-@api.validate(resp=Response(HTTP_201=None), tags=["users"])
+@api.validate(json=UserCreate, resp=Response(HTTP_201=DefaultResponse), tags=["users"])
 def post_user():
     """
     Create an user
@@ -60,6 +60,7 @@ def post_user():
     user = User(
         username=data["username"], 
         email=data["email"],
+        password=data["password"],
         birthdate=datetime.fromisoformat(data["birthdate"]) 
         if "birthdate" in data 
         else None,
@@ -72,7 +73,7 @@ def post_user():
 
 
 @user_controller.put("/<int:user_id>")
-@api.validate(resp=Response(HTTP_200=None, HTTP_404=None), tags=["users"])
+@api.validate(json=UserEdit, resp=Response(HTTP_200=DefaultResponse, HTTP_404=DefaultResponse), tags=["users"])
 def put_user(user_id):
     """
     Update an user
@@ -98,7 +99,7 @@ def put_user(user_id):
 
 
 @user_controller.delete("/<int:user_id>")
-@api.validate(resp=Response(HTTP_200=None, HTTP_404=None), tags=["users"])
+@api.validate(resp=Response(HTTP_200=DefaultResponse, HTTP_404=DefaultResponse), tags=["users"])
 def delete_user(user_id):
     """
     Delete an user
