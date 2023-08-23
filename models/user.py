@@ -15,6 +15,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), index=True)
     birthdate = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    posts = db.relationship("Post", backref="author", lazy="dynamic")
     
     @property
     def password(self):
