@@ -15,7 +15,8 @@ A API Pode ser testada na plataforma de API de sua preferência, sugestão: [Pos
 
 # 🛠 Tecnologias:
 - Python 
-- Framework Flask.
+- Framework Flask
+- Swagger
 
 # 📚 Biliotecas:
 - **SQLAlchemy w/ extension Flask Migrate**
@@ -26,8 +27,6 @@ A API Pode ser testada na plataforma de API de sua preferência, sugestão: [Pos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [Python 3](https://www.python.org/downloads/).
-
-
 
 ### 🎲 Rodando o Back End (servidor)
 
