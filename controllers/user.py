@@ -21,7 +21,7 @@ def get_users():
 
     response = UserResponseList(
         __root__ = [UserResponse.from_orm(user).dict() for user in users]
-    ).model_dump_json()
+    ).json()
 
     return jsonify(json.loads(response))
 
