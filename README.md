@@ -18,7 +18,7 @@ A API Pode ser testada na plataforma de API de sua preferência, sugestão: [Pos
 - Framework Flask
 - Swagger
 
-# 📚 Biliotecas:
+# 📚 Bibliotecas:
 - **SQLAlchemy w/ extension Flask Migrate**
 - **Spectree**
 - **Pydantic**
